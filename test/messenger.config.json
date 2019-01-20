@@ -1,0 +1,43 @@
+{
+  "broker": {
+    "URI": "tcp://127.0.0.1:4200"
+  },
+  "servers": [
+    {
+      "messengerOptions": {
+        "id": "subServer1",
+        "subscribe": {
+          "pubSocketURIs": ["tcp://127.0.0.1:4201", "tcp://127.0.0.1:4202"]
+        }
+      }
+    },
+    {
+      "messengerOptions": {
+        "id": "subServer2",
+        "subscribe": {
+          "pubSocketURIs": [
+            "tcp://127.0.0.1:4201",
+            "tcp://127.0.0.1:4202"
+          ]
+        }
+      }
+    },
+    {
+      "messengerOptions":
+      {
+        "id": "pubServer1",
+        "publish": {
+          "pubSocketURI": "tcp://127.0.0.1:4201"
+        }
+      }
+    },
+    {
+      "messengerOptions": {
+        "id": "pubServer2",
+        "publish": {
+          "pubSocketURI": "tcp://127.0.0.1:4202"
+        }
+      }
+    }
+  ]
+}
