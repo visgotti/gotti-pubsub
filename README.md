@@ -21,12 +21,13 @@ for the messages.
 
         messenger.createPublish('ADD')
 
+then used like -
 
-        example 2: (parameter message)
         messenger.publications.ADD([5, 10]);
 
 
 now all you have to do on the receiving end, is register the subscription for the name/protocol with the following API -
+
         messenger.createSubscription(protocolOrName, handlerId, handler)
 
    or
@@ -44,12 +45,12 @@ now all you have to do on the receiving end, is register the subscription for th
         })
 
 
-    logs out -
+   logs out -
 
         output: 15
 
-    Remember we sent as data [5, 10], so all it does is add those two values.. and it knows to do that because
-    it was the "ADD" protocol. Don't overthink it, it's really just basically the node event emitter with sockets.
+   Remember we sent as data [5, 10], so all it does is add those two values.. and it knows to do that because
+   it was the "ADD" protocol. Don't overthink it, it's really just basically the node event emitter with sockets.
 
    or if you want multiple handlers
 
@@ -59,7 +60,9 @@ now all you have to do on the receiving end, is register the subscription for th
                 console.log(`${handlerName}:${(data[0] + data[1] + i)}`);
             })
         }
-    logs out-
+
+   logs out-
+
         id_0: 15
         id_1: 16
         id_2: 17
