@@ -1,6 +1,6 @@
 {
-  "name": "gptto-pubsub",
-  "version": "0.1.0",
+  "name": "gotti-pubsub",
+  "version": "0.1.1",
   "description": "Low level implementation of zeromq pub sub sockets.",
   "scripts": {
     "build": "tsc",

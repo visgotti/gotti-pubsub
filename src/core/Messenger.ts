@@ -5,28 +5,6 @@ export interface SubscriptionHandler { (data: any): Handler<Function>; id: strin
 
 export type Sequence = number;
 
-export interface MessengerConfig {
-    ['servers']:
-        Array<{
-            ['name']: string,
-            ['messengerOptions']: any
-        }>
-}
-
-export interface PublishOptions {
-    pubSocketURI: string,
-}
-
-export interface SubscribeOptions {
-    pubSocketURIs: Array<string>,
-}
-
-export interface MessengerOptions {
-    id: string,
-    publish?: PublishOptions,
-    subscribe?: SubscribeOptions,
-}
-
 enum CREATED_OR_ADDED {
     CREATED = 'CREATED',
     ADDED = 'ADDED',
@@ -44,59 +22,53 @@ export class Messenger {
     private pubSocket: any;
     private subSocket: any;
 
-    private options: MessengerOptions;
+    private options: any;
 
-    constructor(options: MessengerOptions) {
-        this.id = options.id;
-        this.options = options;
+    constructor(id) {
+        this.id = id;
+        this.options = {};
+
         this.pubSocket = null;
 
-        this.publications = null;
+        this.publications = {};
         this.publisher = null;
 
         this.subscriptions = null;
         this.subscriber = null;
-        this.initializeMessengers(options);
     }
 
-    /**
-     * sets and initializes available public functions based on messenger options passed in.
-     * @param options
-     */
-    private initializeMessengers(options: MessengerOptions) {
-        if(options.publish) {
-            this.publications = {};
-            this.pubSocket = zmq.socket('pub');
-            this.pubSocket.bindSync(options.publish.pubSocketURI);
-            this.publisher = new Publisher(this.pubSocket);
-            this.getOrCreatePublish = this._getOrCreatePublish;
-            this.createPublish = this._createPublish;
-            this.removePublish = this._removePublish;
-            this.removeAllPublish = this._removeAllPublish;
-        }
+    public initializePublisher(URI: string) {
+        this.pubSocket = zmq.socket('pub');
+        this.pubSocket.bindSync(URI);
+        this.options.pubURI = URI;
+        this.publisher = new Publisher(this.pubSocket);
+        this.getOrCreatePublish = this._getOrCreatePublish;
+        this.createPublish = this._createPublish;
+        this.removePublish = this._removePublish;
+        this.removeAllPublish = this._removeAllPublish;
+    }
 
-        if(options.subscribe) {
-            this.subSocket = zmq.socket('sub');
-            for(let i = 0; i < options.subscribe.pubSocketURIs.length; i++) {
-                this.subSocket.connect(options.subscribe.pubSocketURIs[i]);
-            }
-            this.subscriptions = new Set();
-            this.subscriber = new Subscriber(this.subSocket);
-            this.createSubscription = this._createSubscription;
-            this.createOrAddSubscription = this._createOrAddSubscription;
-            this.removeSubscriptionById = this._removeSubscriptionById;
-            this.removeAllSubscriptionsWithId = this._removeAllSubscriptionsWithId;
-            this.removeAllSubscriptionsWithName = this._removeAllSubscriptionsWithName;
-            this.removeAllSubscriptions = this._removeAllSubscriptions;
-            this.getHandlerIdsForSubscriptionName = this._getHandlerIdsForSubscriptionName;
-            this.getSubscriptionNamesForHandlerId = this._getSubscriptionNamesForHandlerId;
+    public initializeSubscriber(URIs: Array<string>) {
+        this.subSocket = zmq.socket('sub');
+        for(let i = 0; i < URIs.length; i++) {
+            this.subSocket.connect(URIs[i]);
         }
+        this.subscriptions = new Set();
+        this.subscriber = new Subscriber(this.subSocket);
+        this.createSubscription = this._createSubscription;
+        this.createOrAddSubscription = this._createOrAddSubscription;
+        this.removeSubscriptionById = this._removeSubscriptionById;
+        this.removeAllSubscriptionsWithId = this._removeAllSubscriptionsWithId;
+        this.removeAllSubscriptionsWithName = this._removeAllSubscriptionsWithName;
+        this.removeAllSubscriptions = this._removeAllSubscriptions;
+        this.getHandlerIdsForSubscriptionName = this._getHandlerIdsForSubscriptionName;
+        this.getSubscriptionNamesForHandlerId = this._getSubscriptionNamesForHandlerId;
     }
 
     public close() {
         if(this.pubSocket) {
             this._removeAllPublish();
-            this.pubSocket.unbindSync(this.options.publish.pubSocketURI);
+            this.pubSocket.unbindSync(this.options.pubURI);
             this.pubSocket.close();
             this.pubSocket = null;
         }

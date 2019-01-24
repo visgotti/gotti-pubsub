@@ -5,23 +5,6 @@ export interface SubscriptionHandler {
     decode?: Function;
 }
 export declare type Sequence = number;
-export interface MessengerConfig {
-    ['servers']: Array<{
-        ['name']: string;
-        ['messengerOptions']: any;
-    }>;
-}
-export interface PublishOptions {
-    pubSocketURI: string;
-}
-export interface SubscribeOptions {
-    pubSocketURIs: Array<string>;
-}
-export interface MessengerOptions {
-    id: string;
-    publish?: PublishOptions;
-    subscribe?: SubscribeOptions;
-}
 declare enum CREATED_OR_ADDED {
     CREATED = "CREATED",
     ADDED = "ADDED"
@@ -37,12 +20,9 @@ export declare class Messenger {
     private pubSocket;
     private subSocket;
     private options;
-    constructor(options: MessengerOptions);
-    /**
-     * sets and initializes available public functions based on messenger options passed in.
-     * @param options
-     */
-    private initializeMessengers;
+    constructor(id: any);
+    initializePublisher(URI: string): void;
+    initializeSubscriber(URIs: Array<string>): void;
     close(): void;
     createPublish(name: string, encode?: Function | boolean): Function;
     /**

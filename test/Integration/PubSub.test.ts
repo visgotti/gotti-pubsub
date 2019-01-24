@@ -5,6 +5,8 @@ import * as path from 'path';
 
 import { Messenger } from '../../src/core/Messenger';
 
+let pubURIs = ['tcp://127.0.0.1:4201', 'tcp://127.0.0.1:4202'];
+
 describe('Publish to subscription communication', function() {
     let config: any;
     let pubServers = [];
@@ -14,26 +16,24 @@ describe('Publish to subscription communication', function() {
 
     //TODO: figure out why I need to wait so long between each test for them to pass.
     beforeEach((done) => {
-        config = fs.readFileSync(path.resolve('test', 'messenger.config.json'));
-        config = JSON.parse(config);
-
         pub1Calls = 0;
         pub2Calls = 0;
 
         pubServers.length = 0;
         subServers.length = 0;
 
-        for(let i = 0; i < config.servers.length; i++) {
-            const serverData = config.servers[i];
-
-            if(!("publish" in serverData.messengerOptions) && !("subscribe" in serverData.messengerOptions)) continue;
-
-            let server = new Messenger(serverData.messengerOptions);
-
-            if(serverData.messengerOptions["publish"]) {
-                pubServers.push(server);
-            } else if (serverData.messengerOptions["subscribe"]) {
-                subServers.push(server);
+        for(let i = 0; i < 4; i++) {
+            const messenger = new Messenger(i);
+            if(i < 2) {
+                messenger.initializeSubscriber(pubURIs);
+                subServers.push(messenger);
+            } else {
+                if(i === 2) {
+                    messenger.initializePublisher(pubURIs[0])
+                } else {
+                    messenger.initializePublisher(pubURIs[1]);
+                }
+                pubServers.push(messenger);
             }
         }
         assert.strictEqual(pubServers.length, 2);

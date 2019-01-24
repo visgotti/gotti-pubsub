@@ -9,52 +9,45 @@ var CREATED_OR_ADDED;
 const Publisher_1 = require("./Messengers/Publisher");
 const Subscriber_1 = require("./Messengers/Subscriber");
 class Messenger {
-    constructor(options) {
-        this.id = options.id;
-        this.options = options;
+    constructor(id) {
+        this.id = id;
+        this.options = {};
         this.pubSocket = null;
-        this.publications = null;
+        this.publications = {};
         this.publisher = null;
         this.subscriptions = null;
         this.subscriber = null;
-        this.initializeMessengers(options);
     }
-    /**
-     * sets and initializes available public functions based on messenger options passed in.
-     * @param options
-     */
-    initializeMessengers(options) {
-        if (options.publish) {
-            this.publications = {};
-            this.pubSocket = zmq.socket('pub');
-            this.pubSocket.bindSync(options.publish.pubSocketURI);
-            this.publisher = new Publisher_1.Publisher(this.pubSocket);
-            this.getOrCreatePublish = this._getOrCreatePublish;
-            this.createPublish = this._createPublish;
-            this.removePublish = this._removePublish;
-            this.removeAllPublish = this._removeAllPublish;
+    initializePublisher(URI) {
+        this.pubSocket = zmq.socket('pub');
+        this.pubSocket.bindSync(URI);
+        this.options.pubURI = URI;
+        this.publisher = new Publisher_1.Publisher(this.pubSocket);
+        this.getOrCreatePublish = this._getOrCreatePublish;
+        this.createPublish = this._createPublish;
+        this.removePublish = this._removePublish;
+        this.removeAllPublish = this._removeAllPublish;
+    }
+    initializeSubscriber(URIs) {
+        this.subSocket = zmq.socket('sub');
+        for (let i = 0; i < URIs.length; i++) {
+            this.subSocket.connect(URIs[i]);
         }
-        if (options.subscribe) {
-            this.subSocket = zmq.socket('sub');
-            for (let i = 0; i < options.subscribe.pubSocketURIs.length; i++) {
-                this.subSocket.connect(options.subscribe.pubSocketURIs[i]);
-            }
-            this.subscriptions = new Set();
-            this.subscriber = new Subscriber_1.Subscriber(this.subSocket);
-            this.createSubscription = this._createSubscription;
-            this.createOrAddSubscription = this._createOrAddSubscription;
-            this.removeSubscriptionById = this._removeSubscriptionById;
-            this.removeAllSubscriptionsWithId = this._removeAllSubscriptionsWithId;
-            this.removeAllSubscriptionsWithName = this._removeAllSubscriptionsWithName;
-            this.removeAllSubscriptions = this._removeAllSubscriptions;
-            this.getHandlerIdsForSubscriptionName = this._getHandlerIdsForSubscriptionName;
-            this.getSubscriptionNamesForHandlerId = this._getSubscriptionNamesForHandlerId;
-        }
+        this.subscriptions = new Set();
+        this.subscriber = new Subscriber_1.Subscriber(this.subSocket);
+        this.createSubscription = this._createSubscription;
+        this.createOrAddSubscription = this._createOrAddSubscription;
+        this.removeSubscriptionById = this._removeSubscriptionById;
+        this.removeAllSubscriptionsWithId = this._removeAllSubscriptionsWithId;
+        this.removeAllSubscriptionsWithName = this._removeAllSubscriptionsWithName;
+        this.removeAllSubscriptions = this._removeAllSubscriptions;
+        this.getHandlerIdsForSubscriptionName = this._getHandlerIdsForSubscriptionName;
+        this.getSubscriptionNamesForHandlerId = this._getSubscriptionNamesForHandlerId;
     }
     close() {
         if (this.pubSocket) {
             this._removeAllPublish();
-            this.pubSocket.unbindSync(this.options.publish.pubSocketURI);
+            this.pubSocket.unbindSync(this.options.pubURI);
             this.pubSocket.close();
             this.pubSocket = null;
         }
