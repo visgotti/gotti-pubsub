@@ -2,21 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d4e14ce6-6203-4904-bd4b-65dcba1709c4" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/core/index.ts" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/Messenger.d.ts" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/Messenger.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/Messengers/Publisher.d.ts" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/Messengers/Publisher.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/Messengers/Subscriber.d.ts" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/dist/Messengers/Subscriber.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/test/messenger.config.json" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/gotti-pubsub.iml" afterPath="$PROJECT_DIR$/.idea/gotti-pubsub.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules.xml" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/core/Messenger.ts" afterPath="$PROJECT_DIR$/src/core/Messenger.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/Integration/PubSub.test.ts" afterPath="$PROJECT_DIR$/test/Integration/PubSub.test.ts" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/core/index.ts" afterPath="$PROJECT_DIR$/src/index.ts" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -60,8 +46,8 @@
       <file leaf-file-name="Messenger.ts" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/core/Messenger.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="7" column="23" lean-forward="true" selection-start-line="7" selection-start-column="23" selection-end-line="7" selection-end-column="23" />
+            <state relative-caret-position="180">
+              <caret line="39" column="30" lean-forward="false" selection-start-line="39" selection-start-column="11" selection-end-line="39" selection-end-column="30" />
               <folding>
                 <element signature="e#287#338#0" expanded="true" />
               </folding>
@@ -70,10 +56,10 @@
         </entry>
       </file>
       <file leaf-file-name="index.ts" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/core/index.ts">
+        <entry file="file://$PROJECT_DIR$/src/index.ts">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="0">
-              <caret line="0" column="40" lean-forward="true" selection-start-line="0" selection-start-column="40" selection-end-line="0" selection-end-column="40" />
+              <caret line="0" column="45" lean-forward="true" selection-start-line="0" selection-start-column="45" selection-end-line="0" selection-end-column="45" />
               <folding />
             </state>
           </provider>
@@ -105,7 +91,7 @@
         <entry file="file://$PROJECT_DIR$/test/Integration/PubSub.test.ts">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="165">
-              <caret line="29" column="20" lean-forward="true" selection-start-line="29" selection-start-column="20" selection-end-line="29" selection-end-column="20" />
+              <caret line="29" column="20" lean-forward="false" selection-start-line="29" selection-start-column="20" selection-end-line="29" selection-end-column="20" />
               <folding>
                 <element signature="e#0#33#0" expanded="true" />
               </folding>
@@ -316,6 +302,20 @@
               <option name="myItemId" value="src" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gotti-pubsub" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="gotti-pubsub" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="core" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
@@ -339,6 +339,9 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
     </key>
@@ -418,12 +421,12 @@
       <workItem from="1548008428353" duration="46000" />
       <workItem from="1548008482227" duration="2182000" />
       <workItem from="1548195365069" duration="1347000" />
-      <workItem from="1548288048802" duration="758000" />
+      <workItem from="1548288048802" duration="1152000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="16775000" />
+    <option name="totallyTimeSpent" value="17169000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1667" y="24" width="1533" height="876" extended-state="6" />
@@ -856,7 +859,7 @@
     <entry file="file://$PROJECT_DIR$/test/Integration/PubSub.test.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="165">
-          <caret line="29" column="20" lean-forward="true" selection-start-line="29" selection-start-column="20" selection-end-line="29" selection-end-column="20" />
+          <caret line="29" column="20" lean-forward="false" selection-start-line="29" selection-start-column="20" selection-end-line="29" selection-end-column="20" />
           <folding>
             <element signature="e#0#33#0" expanded="true" />
           </folding>
@@ -873,18 +876,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/core/Messenger.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" column="23" lean-forward="true" selection-start-line="7" selection-start-column="23" selection-end-line="7" selection-end-column="23" />
+        <state relative-caret-position="180">
+          <caret line="39" column="30" lean-forward="false" selection-start-line="39" selection-start-column="11" selection-end-line="39" selection-end-column="30" />
           <folding>
             <element signature="e#287#338#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/index.ts">
+    <entry file="file://$PROJECT_DIR$/src/index.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
-          <caret line="0" column="40" lean-forward="true" selection-start-line="0" selection-start-column="40" selection-end-line="0" selection-end-column="40" />
+          <caret line="0" column="45" lean-forward="true" selection-start-line="0" selection-start-column="45" selection-end-line="0" selection-end-column="45" />
           <folding />
         </state>
       </provider>
