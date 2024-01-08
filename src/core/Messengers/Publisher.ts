@@ -9,7 +9,7 @@ export class Publisher {
     }
 
     public make(name, encode?: Function) {
-        if(encode) {
+        if(typeof encode === 'function') {
             return (data => {
                 if(data === null) return;
                 this.pubSocket.send([name,  encode(data)]);

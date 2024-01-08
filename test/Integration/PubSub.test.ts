@@ -15,7 +15,7 @@ describe('Publish to subscription communication', function() {
     let pub2Calls = 0;
 
     //TODO: figure out why I need to wait so long between each test for them to pass.
-    beforeEach((done) => {
+    beforeEach(async () => {
         pub1Calls = 0;
         pub2Calls = 0;
 
@@ -26,41 +26,43 @@ describe('Publish to subscription communication', function() {
             const messenger = new Messenger(i);
             if(i < 2) {
                 messenger.initializeSubscriber(pubURIs);
-                subServers.push(messenger);
+                subServers.push(messenger);          
             } else {
                 if(i === 2) {
-                    messenger.initializePublisher(pubURIs[0])
+                    await messenger.initializePublisher(pubURIs[0])
                 } else {
-                    messenger.initializePublisher(pubURIs[1]);
+                    await messenger.initializePublisher(pubURIs[1]);
                 }
                 pubServers.push(messenger);
             }
         }
-        assert.strictEqual(pubServers.length, 2);
-        assert.strictEqual(subServers.length, 2);
-        setTimeout(() => {
-            done();
-        }, 250);
+  
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                assert.strictEqual(pubServers.length, 2);
+                assert.strictEqual(subServers.length, 2);
+                resolve();
+            }, 1550);
+        })
+   
     });
 
-    afterEach((done) => {
-        pubServers.forEach(server => {
-           server.close();
+    afterEach(async () => {
+        await pubServers.forEach(async server => {
+           await server.close();
            server = null;
         });
         pubServers.length = 0;
-        subServers.forEach(server => {
-           server.close();
+        await subServers.forEach(async server => {
+           await server.close();
            server = null;
         });
         subServers.length = 0;
-        done();
     });
 
     it('Sends publication to 1 subscriber', function(done) {
         let sub1Correct = false;
         let sub2Correct = true;
-
 
         subServers[0].createSubscription("foo", 'foo', function(data) {
             assert.strictEqual(data[0], 10);
@@ -81,7 +83,7 @@ describe('Publish to subscription communication', function() {
             assert.strictEqual(sub1Correct, true);
             assert.strictEqual(sub2Correct, true);
             done();
-        }, 10);
+        }, 1500);
     });
 
     it('Sends publication from both publishers to both subscribers', function(done) {
@@ -201,7 +203,7 @@ describe('Publish to subscription communication', function() {
             assert.strictEqual(sub1Received, 5);
             assert.strictEqual(sub2Received, 10);
             done();
-        }, 10);
+        }, 500);
     });
 
     it('messenger.subscriber.addHandler and messenger.addOrCreateSubscription both register multiple handlers for a subscriber', function(done) {
@@ -232,7 +234,7 @@ describe('Publish to subscription communication', function() {
         setTimeout(() => {
             assert.strictEqual(sub1Received, 0);
             done();
-        }, 10);
+        }, 100);
     });
 
     it('messenger.removeSubscriptionById removes only 1', function(done) {
@@ -324,6 +326,8 @@ describe('Publish to subscription communication', function() {
             done();
         }, false);
 
-        pubServers[0].publications.noSerialization(JSON.stringify([10]));
+        setTimeout(() => {
+            pubServers[0].publications.noSerialization(JSON.stringify([10]));
+        }, 10);
     });
 });

@@ -37,9 +37,9 @@ export class Messenger {
         this.subscriber = null;
     }
 
-    public initializePublisher(URI: string) {
-        this.pubSocket = zmq.socket('pub');
-        this.pubSocket.bindSync(URI);
+    public async initializePublisher(URI: string) {
+        this.pubSocket = new zmq.Publisher({ linger: 0 });
+        await this.pubSocket.bind(URI);
         this.options.pubURI = URI;
         this.publisher = new Publisher(this.pubSocket);
         this.getOrCreatePublish = this._getOrCreatePublish;
@@ -49,7 +49,7 @@ export class Messenger {
     }
 
     public initializeSubscriber(URIs: Array<string>) {
-        this.subSocket = zmq.socket('sub');
+        this.subSocket = new zmq.Subscriber({ linger: 0 });
         for(let i = 0; i < URIs.length; i++) {
             this.subSocket.connect(URIs[i]);
         }
@@ -65,10 +65,10 @@ export class Messenger {
         this.getSubscriptionNamesForHandlerId = this._getSubscriptionNamesForHandlerId;
     }
 
-    public close() {
+    public async close() {
         if(this.pubSocket) {
             this._removeAllPublish();
-            this.pubSocket.unbindSync(this.options.pubURI);
+            await this.pubSocket.unbind(this.options.pubURI);
             this.pubSocket.close();
             this.pubSocket = null;
         }

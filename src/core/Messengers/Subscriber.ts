@@ -120,16 +120,16 @@ export class Subscriber {
         return handlers.map(handler => handler.id);
     }
 
-    private registerOnPublicationHandlers() {
-        this.subSocket.on('message', (...args) => {
+    private async registerOnPublicationHandlers() {
+        for await (const args of this.subSocket) {
             const name = args[0].toString();
             const handlers = this.handlersByName.get(name);
-            if(!(handlers)) return;
+            if(!(handlers)) continue;
 
             for(let i = 0; i < handlers.length; i++) {
                 const data = handlers[i].decode ? handlers[i].decode(args[1]) : args[1];
                 handlers[i](data);
             }
-        });
+        }
     }
 }
